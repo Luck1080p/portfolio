@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seu Nome — Cloud Architect | DevOps & SRE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #080c10;
+      --surface:   #0d1117;
+      --border:    #1e2a38;
+      --accent:    #00e5ff;
+      --accent2:   #7b61ff;
+      --text:      #e2eaf4;
+      --muted:     #5a7290;
+      --danger:    #ff4d6d;
+      --mono:      'Space Mono', monospace;
+      --sans:      'Syne', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── GRID NOISE BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── SPLASH SCREEN ── */
+    #splash {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      transition: opacity .6s ease, visibility .6s ease;
+    }
+
+    #splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .splash-terminal {
+      font-family: var(--mono);
+      font-size: .85rem;
+      color: var(--muted);
+      text-align: left;
+      width: 320px;
+    }
+
+    .splash-terminal span.cmd { color: var(--accent); }
+    .splash-terminal span.ok  { color: #4ade80; }
+
+    .splash-name {
+      font-family: var(--sans);
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(120deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .splash-role {
+      font-family: var(--mono);
+      font-size: .8rem;
+      color: var(--muted);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .btn-enter {
+      margin-top: 1rem;
+      padding: .75rem 2.5rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: .85rem;
+      letter-spacing: 2px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color .3s;
+    }
+
+    .btn-enter::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+      z-index: -1;
+    }
+
+    .btn-enter:hover { color: var(--bg); }
+    .btn-enter:hover::before { transform: scaleX(1); }
+
+    /* ── MAIN ── */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem 6rem;
+    }
+
+    /* ── HEADER ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 4rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border);
+      animation: fadeUp .8s ease both;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      object-fit: cover;
+      flex-shrink: 0;
+      /* Placeholder color when image is missing */
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+    }
+
+    .header-text h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.1;
+    }
+
+    .header-text h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-text .role {
+      font-family: var(--mono);
+      font-size: .78rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+      margin-top: .4rem;
+      text-transform: uppercase;
+    }
+
+    .social-links {
+      display: flex;
+      gap: .8rem;
+      margin-top: 1rem;
+    }
+
+    .social-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: var(--mono);
+      font-size: .75rem;
+      color: var(--muted);
+      text-decoration: none;
+      padding: .3rem .7rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: color .2s, border-color .2s;
+    }
+
+    .social-links a:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── SECTIONS ── */
+    section {
+      margin-bottom: 3.5rem;
+      animation: fadeUp .8s ease both;
+    }
+
+    section:nth-child(2) { animation-delay: .1s; }
+    section:nth-child(3) { animation-delay: .2s; }
+    section:nth-child(4) { animation-delay: .3s; }
+    section:nth-child(5) { animation-delay: .4s; }
+    section:nth-child(6) { animation-delay: .5s; }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── BIO ── */
+    .bio-text {
+      font-size: 1rem;
+      color: #a8bdd4;
+      max-width: 680px;
+      line-height: 1.8;
+    }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: .72rem;
+      padding: .35rem .8rem;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      background: var(--surface);
+      letter-spacing: .5px;
+      transition: color .2s, border-color .2s, background .2s;
+    }
+
+    .badge:hover { color: var(--accent); border-color: var(--accent); background: rgba(0,229,255,.05); }
+    .badge.highlight { color: var(--accent); border-color: rgba(0,229,255,.4); background: rgba(0,229,255,.07); }
+
+    /* ── EXPERIENCE ── */
+    .exp-list { display: flex; flex-direction: column; gap: 1.8rem; }
+
+    .exp-item {
+      padding: 1.2rem 1.4rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent2);
+      border-radius: 0 4px 4px 0;
+      transition: border-left-color .2s;
+    }
+
+    .exp-item:hover { border-left-color: var(--accent); }
+
+    .exp-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: .4rem;
+      margin-bottom: .6rem;
+    }
+
+    .exp-title { font-weight: 700; font-size: 1rem; }
+    .exp-company { color: var(--accent); font-size: .9rem; }
+
+    .exp-period {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .exp-desc {
+      font-size: .9rem;
+      color: #7a96b0;
+      line-height: 1.7;
+    }
+
+    /* ── PROJECTS ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1rem;
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1.4rem;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .25s, transform .25s;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .3s ease;
+    }
+
+    .project-card:hover { border-color: rgba(0,229,255,.3); transform: translateY(-3px); }
+    .project-card:hover::before { transform: scaleX(1); }
+
+    .project-card .proj-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .project-card .proj-name {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .project-card .proj-desc {
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .project-card .proj-link {
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--accent);
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    /* ── CERTS ── */
+    .certs-list { display: flex; flex-direction: column; gap: .8rem; }
+
+    .cert-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: .9rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color .2s;
+    }
+
+    .cert-item:hover { border-color: var(--accent); }
+
+    .cert-logo {
+      font-size: 1.4rem;
+      flex-shrink: 0;
+    }
+
+    .cert-info { flex: 1; }
+    .cert-name { font-weight: 600; font-size: .9rem; }
+    .cert-issuer { font-size: .78rem; color: var(--muted); font-family: var(--mono); }
+
+    .cert-arrow {
+      color: var(--muted);
+      font-size: .8rem;
+      transition: color .2s, transform .2s;
+    }
+
+    .cert-item:hover .cert-arrow { color: var(--accent); transform: translateX(3px); }
+
+    /* ── EDUCATION ── */
+    .edu-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .edu-item {
+      padding: 1rem 1.2rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+
+    .edu-degree { font-weight: 700; font-size: .95rem; }
+    .edu-school { color: var(--accent2); font-size: .85rem; margin-top: .2rem; }
+    .edu-period { font-family: var(--mono); font-size: .7rem; color: var(--muted); margin-top: .3rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2rem 0;
+      font-family: var(--mono);
+      font-size: .7rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ SPLASH SCREEN ═══ -->
+  <div id="splash">
+    <div class="splash-terminal">
+      <div><span class="cmd">$</span> ssh seunome@portfolio.dev</div>
+      <div style="margin-top:.4rem"><span class="ok">✓</span> Connection established</div>
+      <div style="margin-top:.4rem"><span class="cmd">$</span> whoami</div>
+      <div style="margin-top:.4rem; color: var(--text);">cloud-architect | devops-sre | backend-dev</div>
+    </div>
+    <div style="text-align:center">
+      <div class="splash-name">Seu Nome</div>
+      <div class="splash-role">Cloud Architect · DevOps & SRE · Backend</div>
+    </div>
+    <button class="btn-enter" onclick="entrar()">[ ENTRAR ]</button>
+  </div>
+
+  <!-- ═══ CONTEÚDO PRINCIPAL ═══ -->
+  <main id="main" style="display:none">
+
+    <!-- HEADER -->
+    <header>
+      <!-- Substitua o src pela sua foto -->
+      <img class="avatar" src="assets/foto.jpg" alt="Foto de perfil" onerror="this.style.background='linear-gradient(135deg,#7b61ff,#00e5ff)'; this.removeAttribute('src')" />
+      <div class="header-text">
+        <h1>Seu <span>Nome</span></h1>
+        <p class="role">Cloud Architect · DevOps & SRE · Backend Dev</p>
+        <div class="social-links">
+          <a href="https://linkedin.com/in/seuperfil" target="_blank">↗ LinkedIn</a>
+          <a href="https://github.com/seuusuario" target="_blank">↗ GitHub</a>
+          <a href="mailto:seuemail@email.com">✉ Email</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- BIO -->
+    <section>
+      <div class="section-label">// sobre</div>
+      <p class="bio-text">
+        Cloud Architect com foco em <strong style="color:var(--text)">DevOps & SRE</strong>, projetando e mantendo infraestruturas escaláveis, resilientes e seguras na nuvem. Apaixonado por automação, observabilidade e boas práticas de engenharia. Em paralelo, estudo <strong style="color:var(--text)">Backend Development</strong> e <strong style="color:var(--text)">Cyber Security</strong> para construir sistemas robustos do código à infraestrutura.
+      </p>
+    </section>
+
+    <!-- HABILIDADES -->
+    <section>
+      <div class="section-label">// habilidades</div>
+      <div class="skills-grid">
+        <!-- Cloud -->
+        <span class="badge highlight">GCP</span>
+        <span class="badge highlight">AWS</span>
+        <span class="badge highlight">Azure</span>
+        <!-- DevOps / SRE -->
+        <span class="badge highlight">Terraform</span>
+        <span class="badge highlight">Kubernetes</span>
+        <span class="badge highlight">Docker</span>
+        <span class="badge highlight">CI/CD</span>
+        <span class="badge highlight">GitOps</span>
+        <span class="badge">Prometheus</span>
+        <span class="badge">Grafana</span>
+        <span class="badge">Helm</span>
+        <span class="badge">Ansible</span>
+        <!-- Backend -->
+        <span class="badge">Python</span>
+        <span class="badge">Go</span>
+        <span class="badge">Java</span>
+        <span class="badge">PostgreSQL</span>
+        <!-- Security -->
+        <span class="badge">Cyber Security</span>
+        <span class="badge">IAM</span>
+        <span class="badge">Zero Trust</span>
+        <span class="badge">Linux</span>
+        <span class="badge">Shell Script</span>
+      </div>
+    </section>
+
+    <!-- EXPERIÊNCIA -->
+    <section>
+      <div class="section-label">// experiência</div>
+      <div class="exp-list">
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">Cloud Architect / SRE</div>
+              <div class="exp-company">Nome da Empresa</div>
+            </div>
+            <div class="exp-period">MM/AAAA — Atualmente</div>
+          </div>
+          <p class="exp-desc">
+            Descreva suas responsabilidades, tecnologias utilizadas e impacto gerado. Ex: Projetei e operei infraestrutura GCP para sistemas críticos com 99,9% de uptime, utilizando Terraform, Kubernetes e práticas de SRE.
+          </p>
+        </div>
+
+        <div class="exp-item">
+          <div class="exp-header">
+            <div>
+              <div class="exp-title">DevOps Engineer</div>
+              <div class="exp-company">Nome da Empresa</div>
+            </div>
+            <div class="exp-period">MM/AAAA — MM/AAAA</div>
+          </div>
+          <p class="exp-desc">
+            Descreva suas responsabilidades aqui. Ex: Implementei pipelines de CI/CD, containerizei aplicações e automatizei processos de deploy com redução de 70% no tempo de entrega.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PROJETOS -->
+    <section>
+      <div class="section-label">// projetos</div>
+      <div class="projects-grid">
+
+        <!-- CARD DE PROJETO — substitua o href pela URL da sua GitHub Page do projeto -->
+        <a class="project-card" href="https://seuusuario.github.io/nome-do-projeto" target="_blank">
+          <div class="proj-icon">☁️</div>
+          <div class="proj-name">Nome do Projeto 1</div>
+          <div class="proj-desc">Breve descrição do que foi construído, tecnologias usadas e o problema que resolve.</div>
+          <div class="proj-link">Ver projeto ↗</div>
+        </a>
+
+        <a class="project-card" href="https://seuusuario.github.io/nome-do-projeto-2" target="_blank">
+          <div class="proj-icon">🛡️</div>
+          <div class="proj-name">Nome do Projeto 2</div>
+          <div class="proj-desc">Breve descrição do que foi construído, tecnologias usadas e o problema que resolve.</div>
+          <div class="proj-link">Ver projeto ↗</div>
+        </a>
+
+        <a class="project-card" href="https://seuusuario.github.io/nome-do-projeto-3" target="_blank">
+          <div class="proj-icon">⚙️</div>
+          <div class="proj-name">Nome do Projeto 3</div>
+          <div class="proj-desc">Breve descrição do que foi construído, tecnologias usadas e o problema que resolve.</div>
+          <div class="proj-link">Ver projeto ↗</div>
+        </a>
+
+        <a class="project-card" href="https://seuusuario.github.io/nome-do-projeto-4" target="_blank">
+          <div class="proj-icon">🔍</div>
+          <div class="proj-name">Nome do Projeto 4</div>
+          <div class="proj-desc">Breve descrição do que foi construído, tecnologias usadas e o problema que resolve.</div>
+          <div class="proj-link">Ver projeto ↗</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- CERTIFICAÇÕES GCP -->
+    <section>
+      <div class="section-label">// certificações</div>
+      <div class="certs-list">
+
+        <!-- Substitua o href pelo link real da sua credencial -->
+        <a class="cert-item" href="https://www.credential.net/SEU-ID-AQUI" target="_blank">
+          <div class="cert-logo">☁️</div>
+          <div class="cert-info">
+            <div class="cert-name">Associate Cloud Engineer</div>
+            <div class="cert-issuer">Google Cloud · GCP</div>
+          </div>
+          <div class="cert-arrow">↗</div>
+        </a>
+
+        <a class="cert-item" href="https://www.credential.net/SEU-ID-AQUI" target="_blank">
+          <div class="cert-logo">☁️</div>
+          <div class="cert-info">
+            <div class="cert-name">Professional Cloud Architect</div>
+            <div class="cert-issuer">Google Cloud · GCP</div>
+          </div>
+          <div class="cert-arrow">↗</div>
+        </a>
+
+        <!-- Adicione outras certificações aqui -->
+        <a class="cert-item" href="#" target="_blank">
+          <div class="cert-logo">🔒</div>
+          <div class="cert-info">
+            <div class="cert-name">Nome da Certificação</div>
+            <div class="cert-issuer">Emissor · Área</div>
+          </div>
+          <div class="cert-arrow">↗</div>
+        </a>
+
+      </div>
+    </section>
+
+    <!-- FORMAÇÃO -->
+    <section>
+      <div class="section-label">// formação</div>
+      <div class="edu-list">
+        <div class="edu-item">
+          <div class="edu-degree">Nome do Curso</div>
+          <div class="edu-school">Nome da Instituição</div>
+          <div class="edu-period">MM/AAAA — MM/AAAA</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-degree">Nome do Curso</div>
+          <div class="edu-school">Nome da Instituição</div>
+          <div class="edu-period">MM/AAAA — MM/AAAA</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>// built with HTML · CSS · JS — hosted on GitHub Pages</span>
+    </footer>
+
+  </main>
+
+  <script>
+    function entrar() {
+      document.getElementById('splash').classList.add('hidden');
+      const main = document.getElementById('main');
+      main.style.display = 'block';
+      // Pequeno delay para o display:block ter efeito antes da animação
+      setTimeout(() => { main.style.opacity = '1'; }, 10);
+    }
+  </script>
+
+</body>
+</html>
