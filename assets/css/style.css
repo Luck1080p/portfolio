@@ -161,13 +161,6 @@ body::after {
   transform-origin: left;
 }
 
-.splash-buttons {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
 /* ── NAVIGATION ── */
 .nav-bar {
   position: fixed;
