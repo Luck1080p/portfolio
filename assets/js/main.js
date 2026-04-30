@@ -1,22 +1,26 @@
-// Função para alternar entre as visualizações (Currículo e Projetos)
-function showView(viewId) {
+// Função para entrar no site (remover splash)
+function entrar() {
   const splash = document.getElementById('splash');
   const main = document.getElementById('main');
   const navBar = document.getElementById('nav-bar');
+
+  splash.classList.add('hidden');
+  main.style.display = 'block';
+  
+  setTimeout(() => {
+    main.classList.add('visible');
+    navBar.classList.add('visible');
+    // Garante que o currículo apareça por padrão ao entrar
+    showView('curriculum');
+  }, 50);
+}
+
+// Função para alternar entre as abas (Currículo e Projetos)
+function showView(viewId) {
   const curriculumView = document.getElementById('curriculum-view');
   const projectsView = document.getElementById('projects-view');
   const navCurr = document.getElementById('nav-curr');
   const navProj = document.getElementById('nav-proj');
-
-  // Esconde o splash screen se estiver visível
-  if (!splash.classList.contains('hidden')) {
-    splash.classList.add('hidden');
-    main.style.display = 'block';
-    setTimeout(() => {
-      main.classList.add('visible');
-      navBar.classList.add('visible');
-    }, 50);
-  }
 
   // Alterna visibilidade das seções
   if (viewId === 'curriculum') {
@@ -31,7 +35,7 @@ function showView(viewId) {
     navCurr.classList.remove('active');
   }
 
-  // Rola para o topo ao mudar de página
+  // Rola para o topo ao mudar de aba
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
