@@ -161,6 +161,56 @@ body::after {
   transform-origin: left;
 }
 
+.splash-buttons {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── NAVIGATION ── */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: rgba(8, 12, 16, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: all 0.5s ease;
+}
+
+.nav-bar.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nav-link {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--accent);
+  background: rgba(0, 242, 255, 0.05);
+}
+
 /* ── MAIN ── */
 main {
   position: relative;
@@ -515,6 +565,81 @@ footer {
   color: var(--muted);
   border-top: 1px solid var(--border);
   margin-top: 4rem;
+}
+
+/* ── PROJECTS ── */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-5px);
+  box-shadow: var(--glow);
+}
+
+.project-date {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.project-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.project-description {
+  color: #8b949e;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.project-tag {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  padding: 0.3rem 0.8rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.project-link:hover {
+  text-decoration: underline;
 }
 
 /* ── RESPONSIVE ── */

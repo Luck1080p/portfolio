@@ -32,11 +32,23 @@
       <div class="splash-name">Lucas Brito</div>
       <div class="splash-role">Cloud Architect · DevOps · SRE</div>
     </div>
-    <button class="btn-enter" onclick="entrar()">[ ENTRAR ]</button>
+    <div class="splash-buttons">
+      <button class="btn-enter" onclick="showView('curriculum')">[ Curriculum ]</button>
+      <button class="btn-enter" onclick="showView('projects')">[ Projetos ]</button>
+    </div>
   </div>
 
-  <!-- ═══ CONTEÚDO PRINCIPAL ═══ -->
+  <!-- ═══ NAVIGATION ═══ -->
+  <nav class="nav-bar" id="nav-bar">
+    <a class="nav-link" id="nav-curr" onclick="showView('curriculum')">Curriculum</a>
+    <a class="nav-link" id="nav-proj" onclick="showView('projects')">Projetos</a>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
   <main id="main" style="display:none">
+
+    <!-- ═══ CURRICULUM VIEW ═══ -->
+    <div id="curriculum-view">
 
     <!-- HEADER -->
     <header>
@@ -170,7 +182,8 @@
       <div class="section-label">// certificações</div>
       <div class="certs-list">
 
-        <a class="cert-item" href="https://www.credly.com/badges/ca435513-d1d2-41e7-88c1-2ce0cdff0878/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/ca435513-d1d2-41e7-88c1-2ce0cdff0878/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">☁️</div>
           <div class="cert-info">
             <div class="cert-name">Professional Cloud Architect</div>
@@ -179,7 +192,8 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://www.credly.com/badges/28f04360-0834-4ee8-9a81-76fbf2cf6fbf/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/28f04360-0834-4ee8-9a81-76fbf2cf6fbf/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">⚙️</div>
           <div class="cert-info">
             <div class="cert-name">Professional Cloud DevOps Engineer</div>
@@ -188,7 +202,8 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://www.credly.com/badges/42156615-8715-426b-8123-a6465faf4054/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/42156615-8715-426b-8123-a6465faf4054/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">🌐</div>
           <div class="cert-info">
             <div class="cert-name">Professional Cloud Network Engineer</div>
@@ -197,7 +212,8 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://www.credly.com/badges/667c8ace-ded8-4c8d-b8a8-885e3c967388/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/667c8ace-ded8-4c8d-b8a8-885e3c967388/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">☁️</div>
           <div class="cert-info">
             <div class="cert-name">Associate Cloud Engineer</div>
@@ -206,7 +222,8 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://www.credly.com/badges/e2306ee9-6fe9-4e4f-971a-8b3431ed1292/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/e2306ee9-6fe9-4e4f-971a-8b3431ed1292/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">☁️</div>
           <div class="cert-info">
             <div class="cert-name">Cloud Digital Leader</div>
@@ -215,7 +232,8 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://www.credly.com/badges/7c6c9f9b-d115-4299-bac2-217152573d69/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/7c6c9f9b-d115-4299-bac2-217152573d69/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">🤖</div>
           <div class="cert-info">
             <div class="cert-name">Generative AI Leader</div>
@@ -224,7 +242,9 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://learn.microsoft.com/en-us/users/lucasbrito-6499/credentials/94771a3b68789be3?ref=https%3A%2F%2Fwww.linkedin.com%2F" target="_blank">
+        <a class="cert-item"
+          href="https://learn.microsoft.com/en-us/users/lucasbrito-6499/credentials/94771a3b68789be3?ref=https%3A%2F%2Fwww.linkedin.com%2F"
+          target="_blank">
           <div class="cert-logo">💠</div>
           <div class="cert-info">
             <div class="cert-name">Azure Administrator Associate (AZ-104)</div>
@@ -233,7 +253,8 @@
           <div class="cert-arrow">↗</div>
         </a>
 
-        <a class="cert-item" href="https://www.credly.com/badges/f4f0010e-1190-45b4-81e5-adf2ae41c3d6/linked_in_profile" target="_blank">
+        <a class="cert-item" href="https://www.credly.com/badges/f4f0010e-1190-45b4-81e5-adf2ae41c3d6/linked_in_profile"
+          target="_blank">
           <div class="cert-logo">💠</div>
           <div class="cert-info">
             <div class="cert-name">Azure Fundamentals (AZ-900)</div>
@@ -262,6 +283,54 @@
         </div>
       </div>
     </section>
+
+    </div>
+
+    <!-- ═══ PROJECTS VIEW ═══ -->
+    <div id="projects-view" style="display:none">
+      <section>
+        <div class="section-label">// meus projetos</div>
+        <div class="projects-grid">
+          
+          <!-- Template de Projeto 1 -->
+          <article class="project-card">
+            <div class="project-date">2024 — Cloud & DevOps</div>
+            <h2 class="project-title">Infraestrutura como Código (IaC) Multi-Cloud</h2>
+            <p class="project-description">
+              Implementação de uma infraestrutura resiliente e escalável utilizando Terraform para provisionar recursos no GCP e Azure. 
+              Inclui configuração de GKE, Cloud Armor, Load Balancers e redes privadas com foco em alta disponibilidade e segurança.
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">Terraform</span>
+              <span class="project-tag">GCP</span>
+              <span class="project-tag">Azure</span>
+              <span class="project-tag">Kubernetes</span>
+            </div>
+            <a href="#" class="project-link">Ver repositório ↗</a>
+          </article>
+
+          <!-- Template de Projeto 2 -->
+          <article class="project-card">
+            <div class="project-date">2023 — CI/CD & Automation</div>
+            <h2 class="project-title">Pipeline CI/CD com GitHub Actions</h2>
+            <p class="project-description">
+              Automação completa do ciclo de vida de uma aplicação microserviços. 
+              Desde o build das imagens Docker, scan de vulnerabilidades com Trivy, até o deploy automatizado no Google Kubernetes Engine (GKE).
+            </p>
+            <div class="project-tags">
+              <span class="project-tag">GitHub Actions</span>
+              <span class="project-tag">Docker</span>
+              <span class="project-tag">GKE</span>
+              <span class="project-tag">Security</span>
+            </div>
+            <a href="#" class="project-link">Ver repositório ↗</a>
+          </article>
+
+          <!-- Adicione mais projetos seguindo este template -->
+
+        </div>
+      </section>
+    </div>
 
     <footer>
       <span>// built with ♥ by Lucas Brito</span>
